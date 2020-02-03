@@ -1,0 +1,7 @@
+{
+  "name": "FitVision",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
