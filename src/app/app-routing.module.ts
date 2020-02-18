@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: 'analysis',
     loadChildren: () => import('./analysis/analysis.module').then( m => m.AnalysisPageModule)
+  },  {
+    path: 'replay',
+    loadChildren: () => import('./replay/replay.module').then( m => m.ReplayPageModule)
   },
+
 ];
 
 @NgModule({
