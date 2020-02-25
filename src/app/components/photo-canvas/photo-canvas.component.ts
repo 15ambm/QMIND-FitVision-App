@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CameraPreview } from '@ionic-native/camera-preview/ngx';
 import * as posenet from '@tensorflow-models/posenet';
-
+import isSquat from "../Classifiers/Squat";
 @Component({
   selector: 'app-photo-canvas',
   templateUrl: './photo-canvas.component.html',
@@ -57,9 +57,15 @@ export class PhotoCanvasComponent implements OnInit {
 
       this.displayCtx.clearRect(0, 0, this.displayCanvas.nativeElement.width, this.displayCanvas.nativeElement.height);
       this.displayCtx.drawImage(image, 0, 0, this.displayCanvas.nativeElement.width, this.displayCanvas.nativeElement.height);
-      this.displayCtx.strokeStyle = 'blue';
       this.displayCtx.lineWidth = 2;
+      let squat = isSquat(this.pose);
+      if (squat){
+      this.displayCtx.strokeStyle = 'green';
+      this.displayCtx.fillStyle = 'green';
+      }else{
+      this.displayCtx.strokeStyle = 'blue';
       this.displayCtx.fillStyle = 'blue';
+      }
       this.pose.keypoints.forEach(point => {
         if (point.score) {
           this.displayCtx.fillRect(point.position.x, point.position.y, 5, 5);
@@ -67,8 +73,10 @@ export class PhotoCanvasComponent implements OnInit {
       });
       connectedJoints.forEach(points => {
         this.displayCtx.beginPath();
+        if(points[0].score > 0.8 && points[1].score > 0.8) {
         this.displayCtx.moveTo(points[0].position.x, points[0].position.y);
         this.displayCtx.lineTo(points[1].position.x, points[1].position.y);
+        }
         this.displayCtx.closePath();
         this.displayCtx.stroke();
       });
