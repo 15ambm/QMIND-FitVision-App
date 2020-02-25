@@ -16,9 +16,13 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
   private displayCtx: CanvasRenderingContext2D;
   private net: posenet.PoseNet;
   private pose: posenet.Pose;
+  private recording: boolean;
+  private tick: any;
+  private recordingStartTime: number;
 
   constructor(private cameraPreview: CameraPreview, private replayService: ReplayService) {
     this.loadPoseNet();
+    this.recording = false;
   }
 
   async loadPoseNet() {
@@ -58,15 +62,24 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
       this.displayCtx.closePath();
       this.displayCtx.stroke();
     });
+
+    if (this.recording) {
+      this.replayService.recordFrame(this.displayCanvas.nativeElement.toDataURL('image/webp'));
+    }
   }
 
-  async saveReplay() {
-    this.replayService.setReplay(this.displayCanvas.nativeElement.toDataURL());
+  startRecording() {
+    this.recording = true;
+    this.recordingStartTime = Date.now();
+  }
+
+  stopRecording() {
+    this.recording = false;
+    this.replayService.calculateFPS(Date.now() - this.recordingStartTime);
+    this.replayService.compile();
   }
 
   async ngOnInit() {
-
-
     await this.cameraPreview.startCamera({
       x: 0,
       y: 0,
@@ -80,7 +93,7 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
     this.initCanvases();
 
     const image = new Image();
-    setInterval(async () => {
+    this.tick = setInterval(async () => {
       const src = await this.cameraPreview.takeSnapshot();
       image.src = `data:image/png;base64,${src}`;
     }, 1000 / 60);
@@ -90,5 +103,6 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.cameraPreview.stopCamera();
+    clearInterval(this.tick);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ReplayService } from '../services/replay/replay.service';
 
 @Component({
@@ -7,10 +7,12 @@ import { ReplayService } from '../services/replay/replay.service';
   styleUrls: ['./replay.page.scss'],
 })
 export class ReplayPage implements OnInit {
-  public image: string;
+  @ViewChild('replay', null) replay: ElementRef<HTMLVideoElement>;
   constructor(private replayService: ReplayService) {}
 
   ngOnInit() {
-    this.replayService.getReplay().subscribe(image => this.image = image);
+    this.replay.nativeElement.src = this.replayService.getReplay();
+    this.replay.nativeElement.load();
+    this.replay.nativeElement.play();
   }
 }

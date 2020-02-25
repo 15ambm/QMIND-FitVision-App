@@ -1,20 +1,45 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { fromImageArray } from './whammy';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReplayService {
-  private replay: string;
+  private replay: string[];
+  private video: string;
+  private FPS: number;
+
   constructor() {
-    this.replay = null;
+    this.replay = [];
+    this.video = '';
+    this.FPS = 60;
    }
 
-  getReplay(): Observable<string> {
-    return of(this.replay);
+  calculateFPS(duration: number) {
+    this.FPS = this.replay.length / duration * 1000;
+    console.log(this.FPS);
   }
 
-  setReplay(replay: string) {
+  getReplay(): string {
+    return this.video;
+  }
+
+  setReplay(replay: string[]) {
     this.replay = replay;
+  }
+
+  clearFrames() {
+    this.replay = [];
+  }
+
+  recordFrame(frame: string) {
+    this.replay.push(frame);
+  }
+
+  compile() {
+    const blob = fromImageArray(this.replay, this.FPS, null);
+    this.video = URL.createObjectURL(blob);
+    console.log(this.video);
   }
 }

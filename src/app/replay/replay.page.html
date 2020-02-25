@@ -5,5 +5,12 @@
 </ion-header>
 
 <ion-content>
-  <img src='{{image}}' />
+  <video 
+    #replay 
+    preload="metadata"
+    webkit-playsinline="webkit-playsinline"
+    type="video/webm"
+    loop
+    controls
+  ></video>
 </ion-content>
