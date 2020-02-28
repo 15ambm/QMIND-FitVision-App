@@ -20,6 +20,8 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
   private tick: any;
   private recordingStartTime: number;
 
+  private readonly CAMERA_QUALITY = 15;
+
   constructor(private cameraPreview: CameraPreview, private replayService: ReplayService) {
     this.loadPoseNet();
     this.recording = false;
@@ -69,6 +71,7 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
   }
 
   startRecording() {
+    this.replayService.clearFrames();
     this.recording = true;
     this.recordingStartTime = Date.now();
   }
@@ -94,9 +97,9 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
 
     const image = new Image();
     this.tick = setInterval(async () => {
-      const src = await this.cameraPreview.takeSnapshot();
+      const src = await this.cameraPreview.takeSnapshot({ quality: this.CAMERA_QUALITY });
       image.src = `data:image/png;base64,${src}`;
-    }, 1000 / 60);
+    }, 1000 / 30);
 
     image.onload = () => this.analyseFrame(image);
   }
