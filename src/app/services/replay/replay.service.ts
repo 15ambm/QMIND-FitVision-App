@@ -38,7 +38,7 @@ export class ReplayService {
   }
 
   compile() {
-    const blob = fromImageArray(this.replay, this.FPS, null);
+    const blob = fromImageArray(this.replay, this.FPS);
     this.video = URL.createObjectURL(blob);
     console.log(this.video);
   }
