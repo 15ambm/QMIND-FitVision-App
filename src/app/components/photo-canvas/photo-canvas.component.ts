@@ -60,7 +60,7 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
       if (!this.repCounted) {
         this.reps++;
         this.repCounted = true;
-        setTimeout(() => this.repCounted = false, 1500);
+        setTimeout(() => this.repCounted = false, 3000);
       }
 
       this.displayCtx.strokeStyle = 'green';

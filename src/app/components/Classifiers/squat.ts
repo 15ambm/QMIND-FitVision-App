@@ -113,8 +113,8 @@ function Confidence(pose: Pose){
     const rightKnee = pose.keypoints[14].score;
     const leftAnkle = pose.keypoints[15].score;
     const rightAnkle = pose.keypoints[16].score;
-const LeftLowest = Math.min(leftShoulder,leftHip,leftKnee,leftAnkle);
-const RightLowest = Math.min(rightShoulder,rightHip,rightKnee,rightAnkle);
+const LeftLowest = Math.min(leftHip,leftKnee,leftAnkle);
+const RightLowest = Math.min(rightHip,rightKnee,rightAnkle);
 const lowest = Math.min(RightLowest,LeftLowest);
 return lowest;
 
@@ -122,7 +122,7 @@ return lowest;
 
 function isSquat(pose: Pose) {
 
-    if (Confidence(pose)<0.8)return false;
+    if (Confidence(pose)<0.5)return false;
     const leftKneeAngle = getLeftKneeAngle(pose);
     const rightKneeAngle = getRightKneeAngle(pose);
     const leftHipAngle = getLeftHipAngle(pose);
@@ -137,22 +137,22 @@ function isSquat(pose: Pose) {
                 "\nview: ", view);
 
     if(view == 0) {
-        if(leftKneeAngle < 90 && rightKneeAngle < 90 && leftHipAngle < 90 && rightHipAngle < 90) {
+        if(leftKneeAngle < 120 && rightKneeAngle < 120 && leftHipAngle < 110 && rightHipAngle < 110) {
                 return true;
             } else return false;
     } else if (Math.abs(view) == 1) {
         if(view == -1) {
-            if(leftKneeAngle < 75 && leftHipAngle < 75) {
+            if(leftKneeAngle < 90 && leftHipAngle < 90) {
                 return true;
             } else return false;
         } else {
-            if(rightKneeAngle < 75 && rightHipAngle < 75) {
+            if(rightKneeAngle < 90 && rightHipAngle < 90) {
                 return true;
             } else return false;
         }
     } else if(Math.abs(view) == 2) {
 
-            if(leftKneeAngle < 75 || rightKneeAngle < 75) {
+            if(leftKneeAngle < 90 || rightKneeAngle < 90) {
                 return true;
             } else return false;
         
