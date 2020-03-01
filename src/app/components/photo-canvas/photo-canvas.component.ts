@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CameraPreview } from '@ionic-native/camera-preview/ngx';
 import * as posenet from '@tensorflow-models/posenet';
-
+import isSquat from "../Classifiers/squat";
 import { ReplayService } from '../../services/replay/replay.service';
 
 @Component({
@@ -49,9 +49,15 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
 
     this.displayCtx.clearRect(0, 0, this.displayCanvas.nativeElement.width, this.displayCanvas.nativeElement.height);
     this.displayCtx.drawImage(image, 0, 0, this.displayCanvas.nativeElement.width, this.displayCanvas.nativeElement.height);
-    this.displayCtx.strokeStyle = 'blue';
     this.displayCtx.lineWidth = 2;
-    this.displayCtx.fillStyle = 'blue';
+      let squat = isSquat(this.pose);
+      if (squat){
+      this.displayCtx.strokeStyle = 'green';
+      this.displayCtx.fillStyle = 'green';
+      }else{
+      this.displayCtx.strokeStyle = 'blue';
+      this.displayCtx.fillStyle = 'blue';
+      }
     this.pose.keypoints.forEach(point => {
       if (point.score) {
         this.displayCtx.fillRect(point.position.x, point.position.y, 5, 5);
