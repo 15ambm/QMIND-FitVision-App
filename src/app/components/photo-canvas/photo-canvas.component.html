@@ -1,4 +1,22 @@
 <canvas id="photoCanvas" #photoCanvas></canvas>
-<ion-button (click)="startRecording();">Start Recording</ion-button>
-<ion-button (click)="stopRecording();">Stop Recording</ion-button>
+
+<ion-fab class="switch" vertical="top" horizontal="right" slot="fixed">
+  <ion-fab-button (click)="switchCamera();">
+    <ion-icon name="reverse-camera"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-fab class="recording" vertical="bottom" horizonal="center" slot="fixed">
+  <ion-fab-button color="dark" *ngIf="!recording" (click)="startRecording();">
+    <ion-icon name="videocam"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-button color="danger" *ngIf="recording" (click)="stopRecording();">
+    <ion-icon name="square"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<div id="repCounter">
+  Reps: {{reps}}
+</div>
+
 <canvas #displayCanvas></canvas>

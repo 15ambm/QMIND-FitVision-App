@@ -1,3 +1,26 @@
 #photoCanvas {
   display: none;
 }
+
+#repCounter {
+  position: absolute;
+  color: #fff;
+  padding: 2%;
+  font-weight: bold;
+  font-family: "Trebuchet MS";
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+
+ion-fab.switch {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+ion-fab.recording {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+}
