@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { CameraPreview } from '@ionic-native/camera-preview/ngx';
 import * as posenet from '@tensorflow-models/posenet';
 import isSquat from "../Classifiers/squat";
@@ -20,11 +21,17 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
   private repCounted: boolean;
   private tick: any;
   private recordingStartTime: number;
-  private reps: number;
+
+  public reps: number;
 
   private readonly CAMERA_QUALITY = 15;
+  private readonly REP_TIMEOUT = 3000;
 
-  constructor(private cameraPreview: CameraPreview, private replayService: ReplayService) {
+  constructor(
+    private cameraPreview: CameraPreview,
+    private replayService: ReplayService,
+    private alertController: AlertController
+  ) {
     this.loadPoseNet();
     this.recording = false;
     this.repCounted = false;
@@ -37,11 +44,11 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
 
   initCanvases() {
     this.photoCanvas.nativeElement.width = window.screen.width;
-    this.photoCanvas.nativeElement.height = window.screen.height;
+    this.photoCanvas.nativeElement.height = window.screen.height * 0.89;
     this.photoCtx = this.photoCanvas.nativeElement.getContext('2d');
 
     this.displayCanvas.nativeElement.width = window.screen.width;
-    this.displayCanvas.nativeElement.height = window.screen.height;
+    this.displayCanvas.nativeElement.height = window.screen.height * 0.89;
     this.displayCtx = this.displayCanvas.nativeElement.getContext('2d');
   }
 
@@ -60,7 +67,7 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
       if (!this.repCounted) {
         this.reps++;
         this.repCounted = true;
-        setTimeout(() => this.repCounted = false, 3000);
+        setTimeout(() => this.repCounted = false, this.REP_TIMEOUT);
       }
 
       this.displayCtx.strokeStyle = 'green';
@@ -94,10 +101,21 @@ export class PhotoCanvasComponent implements OnInit, OnDestroy {
     this.recordingStartTime = Date.now();
   }
 
-  stopRecording() {
+  async stopRecording() {
     this.recording = false;
     this.replayService.calculateFPS(Date.now() - this.recordingStartTime);
     this.replayService.compile();
+
+    const alert = await this.alertController.create({
+      message: 'Recording Successful',
+      subHeader: 'The replay can be viewed on the replay screen',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  switchCamera() {
+    this.cameraPreview.switchCamera();
   }
 
   async ngOnInit() {

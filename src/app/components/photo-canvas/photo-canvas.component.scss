@@ -1,3 +1,17 @@
 #photoCanvas {
   display: none;
 }
+
+ion-fab.switch {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+ion-fab.recording {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+}
