@@ -4,7 +4,7 @@
 FitVision is an application that aims to help casual and experienced gym-goers refine and perfect their form for the squat. The application is designed to detect and estimate the users pose through a phone camera and classify their current pose as a squat or not. The app will be able to count proper reps and replay the set to the user when they are finished. Through consistent use of the app users will develop clean and consistent form for both movements. 
 
 ## Check out a demo below!
-![](FitVisionDemo.gif)
+![](FitVisionDemoDS.gif)
 
 
 ## Technologies
