@@ -17,6 +17,6 @@ Due to the integration with the native camera, the application will not function
 To run FitVision on android, ensure that Android Studio is installed and configured correctly on your computer, and then run `ionic cordova run android` from the main project directory with your phone plugged in.
 
 ### iOS
-To run FitVision on android, ensure that XCode is installed and configured correctly on your computer, and then run `ionic cordova run ios` from the main project directory with your phone plugged in.
+To run FitVision on iOS, ensure that XCode is installed and configured correctly on your computer, and then run `ionic cordova run ios` from the main project directory with your phone plugged in.
 
 ### In association with QMIND, Queen's Universities preeminent club on Machine Learning and Artificial Intelligence
